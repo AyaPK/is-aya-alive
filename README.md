@@ -1,10 +1,10 @@
-# Is Aya Alive? 🚨 Mystery Solved! 🕵️‍♀️
+# Is Aya Alive???
 
-**Spoiler Alert**: She totally is! 💁‍♀️✨
+**Spoiler Alert**: She totally is! 💖
 
 Ever wondered about Aya's current state of existence? Wonder no more! This app tracks her heartbeat, activity, and proves once and for all that she is, indeed, alive and kicking. 
 
-## What's This Magic? 🔮
+## What's This Magic? 
 
 This isn't just an app. It's a real-time Aya-existence-verification system powered by her Oura Ring. Whether she's resting, active, or working out, you'll know EXACTLY what she's up to.
 
