@@ -2,12 +2,19 @@
 console.log('Oura Ring Status App Initialized');
 
 // Determine if we're in production (Netlify) or development
-const IS_NETLIFY = window.location.hostname.includes('netlify.app');
-const API_BASE = IS_NETLIFY ? '/.netlify/functions' : 'http://localhost:3000';
+const IS_NETLIFY = window.location.hostname.includes('netlify.app') || 
+                   window.location.hostname.includes('isayaalive.com');
+const API_BASE = IS_NETLIFY ? '/.netlify/functions' : 'http://localhost:3000/api';
+
+console.log('Current Environment:', {
+    IS_NETLIFY,
+    HOSTNAME: window.location.hostname,
+    API_BASE
+});
 
 async function fetchHeartRate() {
     try {
-        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/heartrate' : '/api/heartrate'}`);
+        const response = await fetch(`${API_BASE}/heartrate`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,7 +85,7 @@ async function fetchHeartRate() {
 
 async function fetchActivity() {
     try {
-        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/activity' : '/api/activity'}`);
+        const response = await fetch(`${API_BASE}/activity`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
