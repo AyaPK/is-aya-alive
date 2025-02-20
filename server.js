@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -20,9 +22,8 @@ const MOCK = {
     useCurrentTime: false   // Set to false to use the timestamp value above
 };
 
-const OURA_TOKEN = '3H2QECPJLWKO4U24FYDURJFUWCSYX6YA';
 const OURA_HEADERS = {
-    'Authorization': `Bearer ${OURA_TOKEN}`,
+    'Authorization': `Bearer ${process.env.OURA_TOKEN}`,
     'Content-Type': 'application/json'
 };
 
@@ -35,7 +36,6 @@ app.get('/api/heartrate', async (req, res) => {
             timestamp: mockTime.toISOString(),
             bpm: MOCK.heartRate
         });
-        console.log(mockData);
         return res.json({ data: mockData });
     }
 
@@ -45,7 +45,6 @@ app.get('/api/heartrate', async (req, res) => {
         });
         
         const data = await response.json();
-        console.log(data);
         res.json(data);
     } catch (error) {
         console.error('Error:', error);

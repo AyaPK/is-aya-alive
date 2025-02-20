@@ -9,8 +9,9 @@
     "netlify-dev": "netlify dev"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
     "node-fetch": "^2.6.9"
   },
   "devDependencies": {
