@@ -1,6 +1,8 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
+  console.log('Attempting to fetch heart rate with token:', process.env.OURA_TOKEN ? 'Token present' : 'No token');
+
   try {
     const response = await fetch('https://api.ouraring.com/v2/usercollection/heartrate', {
       headers: {
