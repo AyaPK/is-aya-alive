@@ -3,11 +3,11 @@ console.log('Oura Ring Status App Initialized');
 
 // Determine if we're in production (Netlify) or development
 const IS_NETLIFY = window.location.hostname.includes('netlify.app');
-const API_BASE = IS_NETLIFY ? '/.netlify/functions' : 'http://localhost:3000/api';
+const API_BASE = IS_NETLIFY ? '/.netlify/functions' : 'http://localhost:3000';
 
 async function fetchHeartRate() {
     try {
-        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/heartrate' : '/heartrate'}`);
+        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/heartrate' : '/api/heartrate'}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -19,15 +19,18 @@ async function fetchHeartRate() {
         const lastTenHeartRates = data.data.slice(-10);
         const averageHeartRate = lastTenHeartRates.reduce((sum, reading) => sum + reading.bpm, 0) / lastTenHeartRates.length;
         
-        // Update heart rate display with average
+        // Get the most recent timestamp
+        const lastHeartbeat = new Date(lastTenHeartRates[lastTenHeartRates.length - 1].timestamp);
+        const dateTimeString = lastHeartbeat.toLocaleDateString() + ' ' + lastHeartbeat.toLocaleTimeString();
+        
+        // Update heart rate display and timestamp separately
         document.getElementById('heart-rate-value').textContent = `${Math.round(averageHeartRate)} BPM (avg)`;
+        document.getElementById('last-sync').textContent = `Last sync: ${dateTimeString}`;
 
-        // Update status text if heart rate is greater than 0
+        // Always show alive status
         const statusText = document.getElementById('status-text');
-        if (averageHeartRate > 0) {
-            statusText.textContent = "Yes! Aya is alive! :)";
-            statusText.classList.add('alive');
-        }
+        statusText.textContent = "Yes! Aya is alive! :)";
+        statusText.classList.add('alive');
 
         // Adjust heart animation speed based on average heart rate
         const heartIcon = document.querySelector('.fa-heart');
@@ -35,13 +38,19 @@ async function fetchHeartRate() {
         heartIcon.style.animation = `heartbeat ${animationDuration}s infinite`;
     } catch (error) {
         console.error('Error fetching heart rate:', error);
-        document.getElementById('heart-rate-value').textContent = 'Error loading heart rate';
+        document.getElementById('heart-rate-value').textContent = '-- BPM';
+        document.getElementById('last-sync').textContent = 'Last sync: unknown';
+        
+        // Even on error, show alive status
+        const statusText = document.getElementById('status-text');
+        statusText.textContent = "Yes! Aya is alive! :)";
+        statusText.classList.add('alive');
     }
 }
 
 async function fetchActivity() {
     try {
-        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/activity' : '/activity'}`);
+        const response = await fetch(`${API_BASE}${IS_NETLIFY ? '/activity' : '/api/activity'}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,11 +71,11 @@ async function fetchActivity() {
         const runningIcon = document.querySelector('.fa-running');
         
         if (recentTags.length > 0) {
-            const activities = recentTags.map(tag => tag.tag_type_1);
-            if (activities.includes('exercise')) {
+            const mostRecentTag = recentTags[0].tag_type_1;
+            if (mostRecentTag === 'exercise') {
                 activityValue.textContent = "She's working out! 🏃‍♂️💪";
                 runningIcon.classList.add('active');
-            } else if (activities.includes('activity')) {
+            } else if (mostRecentTag === 'activity') {
                 activityValue.textContent = "She's up and active! 🚶‍♀️";
                 runningIcon.classList.add('active');
             } else {
@@ -79,7 +88,10 @@ async function fetchActivity() {
         }
     } catch (error) {
         console.error('Error fetching activity:', error);
-        document.getElementById('activity-value').textContent = 'Error loading activity';
+        document.getElementById('activity-value').textContent = '--';
+        
+        document.getElementById('status-text').textContent = 'REQUEST FAILED - DO NOT BE ALARMED';
+        document.getElementById('status-text').style.color = '#ff6b6b';  // Red-orange color
     }
 }
 

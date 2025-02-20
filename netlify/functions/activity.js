@@ -4,8 +4,7 @@ exports.handler = async function(event, context) {
   try {
     const response = await fetch('https://api.ouraring.com/v2/usercollection/tag', {
       headers: {
-        'Authorization': `Bearer ${process.env.OURA_TOKEN}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${process.env.OURA_ACCESS_TOKEN}`
       }
     });
     
@@ -13,17 +12,12 @@ exports.handler = async function(event, context) {
     
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET'
-      },
       body: JSON.stringify(data)
     };
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to fetch activity data' })
+      body: JSON.stringify({ error: 'Don\'t worry! I\'m alive! Just having trouble getting my activity data from the Oura Ring API.' })
     };
   }
 };
