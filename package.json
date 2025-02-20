@@ -1,0 +1,19 @@
+{
+  "name": "is-aya-alive",
+  "version": "1.0.0",
+  "description": "Heart rate monitor using Oura Ring API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "netlify-dev": "netlify dev"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.9"
+  },
+  "devDependencies": {
+    "netlify-cli": "^12.0.0"
+  }
+}
