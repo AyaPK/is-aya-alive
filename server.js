@@ -14,8 +14,10 @@ app.use(express.static('.'));
 // Mock responses for testing - change these values to test different states
 const MOCK = {
     enabled: false,  // Set to false to use real API
-    heartRate: 10,  // Set any BPM you want to test
-    activity: 'exercise'  // 'activity' for active, 'exercise' for workout, 'rest' for resting
+    heartRate: 105,  // Set any BPM you want to test
+    activity: 'exercise',  // 'activity' for active, 'exercise' for workout, 'rest' for resting
+    timestamp: new Date("2024-01-20T12:00:00"),  // Set to any Date object for testing different times
+    useCurrentTime: false   // Set to false to use the timestamp value above
 };
 
 const OURA_TOKEN = '3H2QECPJLWKO4U24FYDURJFUWCSYX6YA';
@@ -28,10 +30,12 @@ app.get('/api/heartrate', async (req, res) => {
     // Return mock response if enabled
     if (MOCK.enabled) {
         // Create mock data array with 10 readings of the same heart rate
+        const mockTime = MOCK.useCurrentTime ? new Date() : new Date(MOCK.timestamp);
         const mockData = Array(10).fill({
-            timestamp: new Date().toISOString(),
+            timestamp: mockTime.toISOString(),
             bpm: MOCK.heartRate
         });
+        console.log(mockData);
         return res.json({ data: mockData });
     }
 
@@ -41,6 +45,7 @@ app.get('/api/heartrate', async (req, res) => {
         });
         
         const data = await response.json();
+        console.log(data);
         res.json(data);
     } catch (error) {
         console.error('Error:', error);
@@ -51,10 +56,11 @@ app.get('/api/heartrate', async (req, res) => {
 app.get('/api/activity', async (req, res) => {
     // Return mock response if enabled
     if (MOCK.enabled) {
-        // Create a mock tag with current timestamp
+        // Create a mock tag with timestamp
+        const mockTime = MOCK.useCurrentTime ? new Date() : new Date(MOCK.timestamp);
         const mockData = [{
-            timestamp: new Date(Date.now() - 1000).toISOString(), // 1 second ago, well within 5 minutes
-            tag_type_1: MOCK.activity  // This should be exactly 'activity', 'exercise', or anything else for rest
+            timestamp: mockTime.toISOString(),
+            tag_type_1: MOCK.activity
         }];
         return res.json({ data: mockData });
     }
@@ -65,7 +71,6 @@ app.get('/api/activity', async (req, res) => {
         });
         
         const data = await response.json();
-        console.log(data);
         res.json(data);
     } catch (error) {
         console.error('Error:', error);

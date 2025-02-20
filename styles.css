@@ -18,9 +18,11 @@ h1 {
     color: white;
     font-size: 4rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
     text-align: center;
     margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
 }
 
 h1 small {
@@ -80,6 +82,14 @@ h1.alive {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.8rem;
     font-family: monospace;
+}
+
+#last-sync .disclaimer {
+    display: block;
+    color: #ff6b6b;
+    font-style: italic;
+    margin-top: 4px;
+    font-family: Arial, sans-serif;
 }
 
 @keyframes heartbeat {
