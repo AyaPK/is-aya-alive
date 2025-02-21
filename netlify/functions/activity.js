@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 exports.handler = async function(event, context) {
-  // Validate request origin (optional but recommended)
   const allowedOrigins = [
     'https://isayaalive.com', 
     'http://localhost:3000', 
@@ -26,7 +25,6 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // Proxy the request to Oura API with secure token handling
     const response = await fetch('https://api.ouraring.com/v2/usercollection/daily_activity', {
       method: 'GET',
       headers: {
@@ -35,12 +33,9 @@ exports.handler = async function(event, context) {
       }
     });
 
-    // Log only non-sensitive information
     console.log('Oura API Response Status:', response.status);
 
-    // Check if the response is successful
     if (!response.ok) {
-      // Log error details without exposing token
       console.error('Oura API Error:', {
         status: response.status,
         statusText: response.statusText
@@ -55,7 +50,6 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // Parse and return only necessary data
     const data = await response.json();
     
     return {
@@ -67,12 +61,11 @@ exports.handler = async function(event, context) {
         'Expires': '0'
       },
       body: JSON.stringify({
-        data: data.data ? data.data.slice(-10) : [], // Only return last 10 entries
+        data: data.data ? data.data.slice(-10) : [],
         timestamp: new Date().toISOString()
       })
     };
   } catch (error) {
-    // Log error without sensitive information
     console.error('Fetch Error:', {
       message: error.message,
       name: error.name
