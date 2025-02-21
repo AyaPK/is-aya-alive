@@ -16,7 +16,7 @@ app.use(express.static('.'));
 // Mock responses for testing - change these values to test different states
 const MOCK = {
     enabled: false,  // Set to false to use real API
-    heartRate: 105,  // Set any BPM you want to test
+    heartRate: 65,  // Set any BPM you want to test
     activity: 'exercise',  // 'activity' for active, 'exercise' for workout, 'rest' for resting
     timestamp: new Date("2024-01-20T12:00:00"),  // Set to any Date object for testing different times
     useCurrentTime: false   // Set to false to use the timestamp value above

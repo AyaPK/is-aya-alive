@@ -25,18 +25,21 @@ async function fetchHeartRate() {
         const activityValue = document.getElementById('activity-value');
         const runningIcon = document.querySelector('.fa-running');
         
-        if (averageHeartRate < 100) {
-            activityValue.textContent = "She is resting 😴";
+        if (averageHeartRate < 70) {
+            activityValue.textContent = "Ssssshhhhh, she is sleeping! 😴";
+            runningIcon.classList.remove('active');
+        } else if (averageHeartRate < 100) {
+            activityValue.textContent = "She is resting 😌";
             runningIcon.classList.remove('active');
         } else if (averageHeartRate >= 100 && averageHeartRate <= 110) {
             activityValue.textContent = "She is active! 🚶‍♀️";
             runningIcon.classList.add('active');
         } else {
-            activityValue.textContent = "She is working out! 🏃‍♂️💪";
+            activityValue.textContent = "She is working out! 🏃‍♀️💪";
             runningIcon.classList.add('active');
         }
         
-        document.getElementById('heart-rate-value').textContent = `${Math.round(averageHeartRate)} BPM (avg)`;
+        document.getElementById('heart-rate-value').textContent = `${Math.round(averageHeartRate)} BPM`;
         document.getElementById('last-sync').innerHTML = `Last sync: ${dateTimeString}${
             isOldSync ? '<br><span class="disclaimer">The ring is probably lost, or this website is broken, oh no!</span>' : ''
         }`;
@@ -60,5 +63,4 @@ async function fetchHeartRate() {
 }
 
 setInterval(fetchHeartRate, 60000);
-
 fetchHeartRate();
