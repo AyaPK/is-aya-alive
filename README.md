@@ -4,6 +4,10 @@
 
 Ever wondered about Aya's current state of existence? Wonder no more! This app tracks her heartbeat, activity, and proves once and for all that she is, indeed, alive and kicking. 
 
+# Live site
+
+This is currently hosted on Netlify at [www.isayaalive.com](www.isayaalive.com)
+
 ## What's This Magic? 
 
 This isn't just an app. It's a real-time Aya-existence-verification system powered by her Oura Ring. Whether she's resting, active, or working out, you'll know EXACTLY what she's up to.
